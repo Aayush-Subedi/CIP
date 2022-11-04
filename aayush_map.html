@@ -1,0 +1,360 @@
+<html>
+  <head>
+    <title>Map Test</title>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <!-- LOGO -->
+      <div class="logo">
+        <img src="logo.webp" alt="logo" />
+      </div>
+      <!-- NAVIGATION MENU -->
+      <ul class="nav-links">
+        <li><a href="file:///Users/aayus_subedi/Desktop/CIP/map.html">Countries</a></li>
+      </ul>
+    </nav>
+
+    <div class="one">
+      <h1>Our Envolments</h1>
+    </div>
+    <div id="map"></div>
+    <style>
+        body{
+            padding-bottom: 120px;
+        }
+
+      * {
+        background-color: rgb(231, 231, 231);
+        margin: 0;
+        padding: 0;
+   
+        /* box-sizing: border-box; */
+      }
+
+      a {
+        background-color: rgb(255, 255, 255);
+        text-decoration: none;
+      }
+      li {
+        list-style: none;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: rgb(255, 255, 255);
+        color: #fff;
+      }
+      .nav-links a {
+        padding-right: 30px;
+        color: rgb(146, 45, 54);
+        font-size: 30px;
+      }
+
+      .one {
+        padding-top: 50px;
+        padding-bottom: 30px;
+      }
+      h1 {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        font-family: "Raleway", sans-serif;
+        font-weight: 300;
+        font-size: 40px;
+        color: rgb(146, 45, 54);
+        -webkit-transition: all 0.4s ease 0s;
+        -o-transition: all 0.4s ease 0s;
+        transition: all 0.4s ease 0s;
+      }
+
+      h1 span {
+        display: block;
+        font-size: 0.5em;
+        line-height: 1.3;
+      }
+      h1 em {
+        font-style: normal;
+        font-weight: 600;
+      }
+      .one h1 {
+        text-align: center;
+        text-transform: uppercase;
+        padding-bottom: 5px;
+      }
+      .one h1:before {
+        width: 28px;
+        height: 5px;
+        display: block;
+        content: "";
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        margin-left: -14px;
+        background-color: #b80000;
+      }
+      .one h1:after {
+        width: 100px;
+        height: 1px;
+        display: block;
+        content: "";
+        position: relative;
+        margin-top: 25px;
+        left: 50%;
+        margin-left: -50px;
+        background-color: #b80000;
+      }
+
+      #map {
+        width: 60vw;
+        height: 70vh;
+        /* position: absolute; */
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border: 1px solid blue;
+  
+      }
+    </style>
+    <script>
+      // var vector = new ol.layer.Vector({
+      //     source: new ol.source.Vector({
+      //         format: new ol.format.GeoJSON(),
+      //         url: 'https://raw.githubusercontent.com/openlayers/ol3/6838fdd4c94fe80f1a3c98ca92f84cf1454e232a/examples/data/geojson/countries.geojson'
+      //     }),
+      //     style: function(feature, res){
+      //         if(feature.get("name") == "Germany"){
+      //             return new ol.style.Style({
+      //                 stroke: new ol.style.Stroke({
+      //                     color: 'red',
+      //                     width: 2
+      //                 })
+      //             });
+      //         }
+      //     }
+      // });
+      var attribution = new ol.control.Attribution({
+        collapsible: false,
+      });
+
+      // var feature = new ol.Feature({
+      //   geometry: new ol.geom.Polygon([
+      //     [88.120441, 27.876542],
+      //     [88.043133, 27.445819],
+      //     [88.174804, 26.810405],
+      //     [88.060238, 26.414615],
+      //     [87.227472, 26.397898],
+      //     [86.024393, 26.630985],
+      //     [85.251779, 26.726198],
+      //     [84.675018, 27.234901],
+      //     [83.304249, 27.364506],
+      //     [81.999987, 27.925479],
+      //     [81.057203, 28.416095],
+      //     [80.088425, 28.79447],
+      //     [80.476721, 29.729865],
+      //     [81.111256, 30.183481],
+      //     [81.525804, 30.422717],
+      //     [82.327513, 30.115268],
+      //     [83.337115, 29.463732],
+      //     [83.898993, 29.320226],
+      //     [84.23458, 28.839894],
+      //     [85.011638, 28.642774],
+      //     [85.82332, 28.203576],
+      //     [86.954517, 27.974262],
+      //     [88.120441, 27.876542],
+      //   ]),
+      // });
+// 
+
+      var polyCoords = [];
+      var coords = "88.120441,27.876542 88.043133,27.445819 88.174804,26.810405 88.060238,26.414615 87.227472,26.397898 86.024393,26.630985 85.251779,26.726198 84.675018,27.234901 83.304249,27.364506 81.999987,27.925479 81.057203,28.416095 80.088425,28.79447 80.476721,29.729865 81.111256,30.183481 81.525804,30.422717 82.327513,30.115268 83.337115,29.463732 83.898993,29.320226 84.23458,28.839894 85.011638,28.642774 85.82332,28.203576 86.954517,27.974262 88.120441,27.876542".split(' ');
+
+      var feature = new ol.Feature({
+          geometry: new ol.geom.Polygon([polyCoords])
+      })
+
+      var layer = new ol.layer.Vector({
+          source: new ol.source.Vector({
+              features: [feature]
+          })
+      });
+
+      // var layer = new ol.layer.Vector({
+      //   source: new ol.source.Vector({
+      //     features: [
+      //       new ol.Feature({
+      //         geometry: new ol.geom.Polygon([
+      //           [
+      //             [88.120441, 27.876542],
+      //             [88.043133, 27.445819],
+      //             [88.174804, 26.810405],
+      //             [88.060238, 26.414615],
+      //             [87.227472, 26.397898],
+      //             [86.024393, 26.630985],
+      //             [85.251779, 26.726198],
+      //             [84.675018, 27.234901],
+      //             [83.304249, 27.364506],
+      //             [81.999987, 27.925479],
+      //             [81.057203, 28.416095],
+      //             [80.088425, 28.79447],
+      //             [80.476721, 29.729865],
+      //             [81.111256, 30.183481],
+      //             [81.525804, 30.422717],
+      //             [82.327513, 30.115268],
+      //             [83.337115, 29.463732],
+      //             [83.898993, 29.320226],
+      //             [84.23458, 28.839894],
+      //             [85.011638, 28.642774],
+      //             [85.82332, 28.203576],
+      //             [86.954517, 27.974262],
+      //             [88.120441, 27.876542],
+      //           ],
+      //         ]),
+      //       }),
+      //     ],
+      //   }),
+      // });
+      var map = new ol.Map({
+        controls: ol.control
+          .defaults({ attribution: false })
+          .extend([attribution]),
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM({
+              url: "https://tile.openstreetmap.be/osmbe/{z}/{x}/{y}.png",
+              attributions: [
+                ol.source.OSM.ATTRIBUTION,
+                'Tiles courtesy of <a href="https://geo6.be/">GEO-6</a>',
+              ],
+              maxZoom: 2,
+            }),
+          }),
+          layer,
+        ],
+        target: "map",
+        view: new ol.View({
+          center: ol.proj.fromLonLat([4.35247, 50.84673]),
+          // maxZoom: 2,
+          minZoom: 2,
+          zoom: 1,
+        }),
+      });
+
+      //   map.addOverlay(layer);
+
+      // var polyCoords = [];
+      // var coords = "95.61,38.60 95.22,37.98 95.60,37.66 94.97,37.65".split(" ");
+
+      // for (var i in coords) {
+      //   var c = coords[i].split(",");
+      //   polyCoords.push(
+      //     ol.proj.transform(
+      //       [parseFloat(c[0]), parseFloat(c[1])],
+      //       "EPSG:4326",
+      //       "EPSG:3857"
+      //     )
+      //   );
+      // }
+
+      // var feature = new ol.Feature({
+      //   geometry: new ol.geom.Polygon([polyCoords]),
+      // });
+
+      // var layer = new ol.layer.Vector({
+      //   source: new ol.source.Vector({
+      //     features: [feature],
+      //   }),
+      // });
+
+      // var map = new ol.Map({
+      //   target: "map",
+      //   layers: [
+      //     new ol.layer.Tile({
+      //       source: new ol.source.MapQuest({ layer: "sat" }),
+      //     }),
+      //     layer,
+      //   ],
+      //   view: new ol.View({
+      //     center: ol.proj.transform([95.22, 37.98], "EPSG:4326", "EPSG:3857"),
+      //     zoom: 4,
+      //   }),
+      // });
+      // "type":"Polygon","coordinates":[[[88.120441,27.876542],[88.043133,27.445819],[88.174804,26.810405],[88.060238,26.414615],[87.227472,26.397898],[86.024393,26.630985],[85.251779,26.726198],[84.675018,27.234901],[83.304249,27.364506],[81.999987,27.925479],[81.057203,28.416095],[80.088425,28.79447],[80.476721,29.729865],[81.111256,30.183481],[81.525804,30.422717],[82.327513,30.115268],[83.337115,29.463732],[83.898993,29.320226],[84.23458,28.839894],[85.011638,28.642774],[85.82332,28.203576],[86.954517,27.974262],[88.120441,27.876542]]]
+      // <path fill="#bfdab4" stroke="#c6c6c6" d="M1467.4,321.8L1467.8000000000002,322.6L1467.6000000000001,
+      // 323.70000000000005L1467.6000000000001,324.70000000000005L1467.7,326.50000000000006L1467.8,
+      // 326.80000000000007L1468.7,327.80000000000007L1469.2,329.1000000000001L1469,331.00000000000006L1468.7,
+      // 331.30000000000007L1467.8,331.00000000000006L1466.7,331.20000000000005L1465.5,331.00000000000006L1464.8,
+      // 331.40000000000003L1463.7,331.00000000000006L1463.1000000000001,330.20000000000005L1461.9,330.90000000000003L1461.5,
+      // 331.00000000000006L1459.5,330.1000000000001L1458.2,329.80000000000007L1457.5,329.6000000000001L1456.7,
+      // 329.9000000000001L1456,329.7000000000001L1455.6,328.8000000000001L1454.8999999999999,328.40000000000015L1453.4999999999998,
+      // 329.00000000000017L1452.8999999999999,328.8000000000002L1452.6,328.3000000000002L1451.8,328.1000000000002L1449.8,
+      // 327.1000000000002L1449.3999999999999,326.1000000000002L1449.1,325.4000000000002L1446.8,324.6000000000002L1446,
+      // 324.2000000000002L1445,324.6000000000002L1444.7,324.9000000000002L1443.1000000000001,324.4000000000002L1442.5000000000002,
+      // 324.4000000000002L1441.7000000000003,325.0000000000002L1440.4000000000003,324.5000000000002L1438.5000000000002,
+      // 324.0000000000002L1438.0000000000002,323.0000000000002L1436.8000000000002,323.10000000000025L1434.7000000000003,
+      // 321.80000000000024L1434.0000000000002,321.5000000000002L1433.3000000000002,321.80000000000024L1431.0000000000002,
+      // 320.60000000000025L1429.9000000000003,319.80000000000024L1429.0000000000002,318.80000000000024L1426.4000000000003,
+      // 317.5000000000002L1425.4000000000003,316.80000000000024L1425.0000000000002,316.7000000000002L1424.5000000000002,
+      // 317.0000000000002L1422.4000000000003,315.60000000000025L1422.2000000000003,315.40000000000026L1422.3000000000002,
+      // 313.90000000000026L1422.8000000000002,313.30000000000024L1422.6000000000001,311.80000000000024L1423.0000000000002,
+      // 309.90000000000026L1423.5000000000002,308.80000000000024L1424.1000000000001,308.2000000000002L1424.7,
+      // 307.4000000000002L1425.1000000000001,307.0000000000002L1425.7,307.10000000000025L1426.4,307.90000000000026L1427.1000000000001,
+      // 307.60000000000025L1427.6000000000001,306.0000000000002L1428.8000000000002,305.7000000000002L1431.0000000000002,306.1000000000002L1432.0000000000002,
+      // 307.4000000000002L1432.4000000000003,307.7000000000002L1434.0000000000002,308.5000000000002L1436.3000000000002,310.2000000000002L1437.3000000000002,
+      // 310.6000000000002L1438.1000000000001,310.6000000000002L1439.4,311.7000000000002L1440.1000000000001,312.6000000000002L1441.0000000000002,
+      // 324.0000000000002L1438.0000000000002,323.0000000000002L1436.8000000000002,323.10000000000025L1434.7000000000003,
+      // 321.80000000000024L1434.0000000000002,321.5000000000002L1433.3000000000002,321.80000000000024L1431.0000000000002,
+      // 320.60000000000025L1429.9000000000003,319.80000000000024L1429.0000000000002,318.80000000000024L1426.4000000000003313.4000000000002L1441.5000000000002,313.4000000000002L1442.8000000000002,312.8000000000002L1443.8000000000002,313.1000000000002L1444.9,315.1000000000002L1446.4,316.1000000000002L1447.5,316.7000000000002L1448,317.1000000000002L1448.8,317.4000000000002L1449.8999999999999,317.1000000000002L1450.3999999999999,317.2000000000002L1450.3,318.6000000000002L1450.6,318.9000000000002L1452.1999999999998,319.2000000000002L1453.6,319.2000000000002L1454.6999999999998,320.1000000000002L1455.6,321.4000000000002L1456.1999999999998,321.4000000000002L1456.1,320.4000000000002L1456.3999999999999,320.2000000000002L1456.8999999999999,320.80000000000024L1458.1,321.40000000000026L1458.6,321.2000000000003L1458.6999999999998,320.40000000000026L1459.3999999999999,320.30000000000024L1459.8,320.80000000000024L1461.3999999999999,321.40000000000026L1462.1999999999998,322.0000000000003L1462.9999999999998,322.1000000000003L1465.1999999999998,
+      // 322.1000000000003L1466.1,321.70000000000033L1467.3999999999999,321.80000000000035Z"
+      // class="sm_state_NP" opacity="1" stroke-opacity="1" stroke-width="1.1874999999999998" stroke-linejoin="round"
+      // transform="matrix(0.3679,0,0,0.3679,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;
+      // cursor: pointer; stroke-opacity: 1; stroke-linejoin: round; fill-opacity: 1;" fill-opacity="1"></path>
+    </script>
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+    <script>
+      var container = document.getElementById("popup");
+      var content = document.getElementById("popup-content");
+      var closer = document.getElementById("popup-closer");
+
+      var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250,
+        },
+      });
+      map.addOverlay(overlay);
+
+      closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+      };
+
+      map.on("singleclick", function (event) {
+        if (map.hasFeatureAtPixel(event.pixel) === true) {
+          var coordinate = event.coordinate;
+
+          content.innerHTML = "<b>Hello world!</b><br />I am a popup.";
+          overlay.setPosition(coordinate);
+        } else {
+          overlay.setPosition(undefined);
+          closer.blur();
+        }
+      });
+    </script>
+  </body>
+</html>
