@@ -8,13 +8,13 @@
       google.charts.setOnLoadCallback(drawRegionsMap);
       function drawRegionsMap() {
         var data = google.visualization.arrayToDataTable([
-          ['Country'],
-          ['Nepal'],
-          ['Germany'],
-          ['Sierra Leone'],
-          ['Burundi'],  
-          ['Zimbabwe'],
-          ['Ecuador']
+          ['Country', 'NGO'],
+          ['Nepal', 'Name_1'],
+          ['Germany', 'Name_2'],
+          ['Sierra Leone', 'Name_3'],
+          ['Burundi', 'Name_4'],  
+          ['Zimbabwe', 'Name_5'],
+          ['Ecuador', 'Name_6']
         ]);
         var options = {};
         var chart = new google.visualization.GeoChart(document.getElementById('1470986505'));

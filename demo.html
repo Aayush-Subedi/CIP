@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1.1', {
+          'packages': ['geochart']
+      });
+      google.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+          var data = google.visualization.arrayToDataTable([
+              ['Country', 'NGO'],
+              ['Germany','x'],
+              ['United States', 'y'],
+              ['Brazil','z'],
+              ['Canada','a'],
+              ['France','b'],
+              ['RU', 'c']
+          ]);
+          
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, {
+              type: 'number',
+              calc: function(data, row) {
+                  var sourceValue = data.getValue(row, 1);
+                  return {
+                      f: 'Active NGO: ' + sourceValue
+                  };
+              }
+          }]);
+
+          var options = {
+          };
+          var chart = new google.visualization.GeoChart(document.getElementById('1470986505'));
+          chart.draw(view, options);
+
+      };
+    </script>
+  </head>
+  <body>
+    <div class="dmRespRow" id="1470986505" style="width: 60vw; height: 70vh; top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 1px solid rgb(243, 236, 131);"></div>
+  </body>
+</html>
