@@ -9,13 +9,13 @@
 
       function drawStuff() {
           var data = google.visualization.arrayToDataTable([
-              ['Country', 'NGO'],
-              ['Germany','x'],
-              ['United States', 'y'],
-              ['Brazil','z'],
-              ['Canada','a'],
-              ['France','b'],
-              ['RU', 'c']
+              ['Country', 'NGO', 'Domain'],
+              ['Nepal','x', 'https://www.ketaaketi.de/'],
+              ['Germany', 'y', 'https://www.ketaaketi.de/'],
+              ['Sierra Leone','z', 'https://www.ketaaketi.de/'],
+              ['Burundi','a', 'https://www.ketaaketi.de/'],
+              ['Zimbabwe','b', 'https://www.ketaaketi.de/'],
+              ['Ecuador', 'c', 'https://www.ketaaketi.de/']
           ]);
           
           var view = new google.visualization.DataView(data);
@@ -32,6 +32,15 @@
           var options = {
           };
           var chart = new google.visualization.GeoChart(document.getElementById('1470986505'));
+
+          google.visualization.events.addListener(chart, 'select', function () {
+            var selection = chart.getSelection();
+            if (selection.length > 0) {
+                console.log(data.getValue(selection[0].row, 2));
+                window.open(data.getValue(selection[0].row, 2));
+            }
+          });
+
           chart.draw(view, options);
 
       };
