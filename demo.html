@@ -52,8 +52,28 @@
 
       };
     </script>
+    <script>
+      var zoom = 1;
+      var zoomStep = 0.2;
+  
+      document.getElementById("zoomIn").addEventListener("click", function() {
+        zoom += zoomStep;
+        document.getElementById("1470986505").style.transform = "scale(" + zoom + ")";
+      });
+      document.getElementById("zoomOut").addEventListener("click", function() {
+        if (zoom > zoomStep) {
+          zoom -= zoomStep;
+          document.getElementById("1470986505").style.transform = "scale(" + zoom + ")";
+        }
+      });
+    </script>
   </head>
   <body>
-    <div class="dmRespRow" id="1470986505" style="width: 90vw; height: 90vh; top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 5px solid rgb(9, 55, 112);"></div>
+    <div class="dmRespRow" id="1470986505" style="width: 90vw; height: 90vh; top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 5px solid rgb(9, 55, 112);">
+    </div>
+    <div>
+      <button id="zoomOut" style="z-index: 3;">-</button>
+      <button id="zoomIn" style="z-index: 3;">+</button>
+    </div>
   </body>
 </html>

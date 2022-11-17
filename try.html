@@ -1,0 +1,157 @@
+<html>
+
+<head>
+  <script>
+    var scaleWithZoom = true;
+    var scaleWithSize = true;
+    var fontSize = 3;
+
+
+    var settings = {
+        container:document.getElementById("demo"),
+        area: { 
+            height: 500,
+            style: {
+                fillColor: "#00558e"
+            }
+        },
+        background: {
+            enabled: false
+        },
+        data: {
+            url:"https://zoomcharts.com/dvsl/data/geo-chart/countries.geo.json",
+            format: "GeoJSON",
+            perBoundsData: false
+        },
+        layers: [
+            {
+                type: "shapes",
+                style: {
+                    node: {
+                        fillColor: "rgba(0, 153, 204, 0.5)",
+                        lineColor: "rgba(255, 255, 255, 0.6)",
+                        lineWidth: 1
+                    },
+                    selection: {
+                        fillColor: "rgba(47, 195, 47, 0.6)"
+                    },
+                    nodeStyleFunction: function(n) {
+                        
+                        //In some cases you will want to adjust label location as some countries does have
+                        //large areas or curved ones or islands further away from mainland.
+                        //As the position of item is calculated automatically in the center, it could we misleading in some cases.
+                        //E.g. USA and Alaska.
+                        var px = null;
+                        var py = null;
+                        
+                        //Conditional styling or label item coordinate alignment:
+                        if(n.data.id == "USA") {
+                            if(n.selected) {
+                                n.fillColor = "rgba(255, 100, 255, 0.7)";
+                            }
+                            px = 0.5;
+                            py = 0.5;
+                        } else if (n.data.id == "GRL") {
+                            if(n.selected) {
+                                n.fillColor = "rgba(226, 74, 120, 0.6)";
+                            }
+                        } else if (n.data.id == "RUS") {
+                            px = 0.5;
+                            py = 0.3;
+                        } else if (n.data.id == "NOR") {
+                            px = 0;
+                            py = 0.2;
+                        }
+
+
+                        //create labels as items if they are not created already:
+                        if(!n.items.length) {
+                            var item = {
+                                align: "center",
+                                text: n.data.shapeFeature.properties.name,
+                                textStyle: {
+                                    fillColor: "white",
+                                    font: fontSize + "px Arial"
+                                },
+                                borderRadius: 3,
+                                padding: 1,
+                                backgroundStyle: {
+                                    fillColor: "orange",
+                                    //lineColor: "#dd6e00",
+                                    //lineWidth: 1
+                                },
+                                scaleWithSize: scaleWithSize,
+                                scaleWithZoom: scaleWithZoom,
+                                px: px,
+                                py: py
+                            };
+
+                            n.items = [item];
+                        }
+                    }
+                }
+            }
+        ],
+        navigation: {
+            initialLng: 20,
+            initialLat: 48.92,
+            initialZoom: 2,
+            minZoom: 2
+        },
+        interaction: {
+            selection: {
+                enabled: true
+            }
+        }
+    };
+ 
+    var chart = new GeoChart(settings);
+
+
+    $("#switch").click(function() {
+        var s = {};
+        console.log("X");
+        var mode = $(this).data("mode");
+        if(mode == "scaling-off") {
+            $(this)
+                .html("Switch label mode to - use scaling")
+                .data("mode", "scaling-on")
+            ;
+         
+            scaleWithSize = true;
+            scaleWithZoom = true;
+            fontSize = 3;
+        
+        } else if(mode == "scaling-on") {
+            $(this)
+                .html("Switch label mode to - no scaling")
+                .data("mode", "scaling-off")
+            ;
+            
+            scaleWithSize = false;
+            scaleWithZoom = false;
+            fontSize = 7;
+        }
+
+        //In case you change some additional settings, then use following API method:
+        //chart.updateSettings(s);
+        //But as we need to update/replace node items, then easiest way is to call replaceData API method:
+        chart.reloadData();
+    });
+
+  </script>
+</head>
+
+<body>
+    <script src="https://cdn.zoomcharts-cloud.com/1/latest/zoomcharts.js"></script>
+
+    <p>Click on a button to see various ways to display labels.</p>
+
+    <div>
+        <button id="switch" data-mode="scaling-on">Switch label mode to - no scaling</button>
+    </div>
+
+    <div id="demo"></div>
+</body>
+
+</html>
