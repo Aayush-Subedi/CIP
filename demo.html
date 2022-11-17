@@ -10,12 +10,13 @@
       function drawStuff() {
           var data = google.visualization.arrayToDataTable([
               ['Country', 'NGO', 'Domain'],
-              ['Nepal','x', 'https://www.ketaaketi.de/'],
-              ['Germany', 'y', 'https://www.ketaaketi.de/'],
-              ['Sierra Leone','z', 'https://www.ketaaketi.de/'],
-              ['Burundi','a', 'https://www.ketaaketi.de/'],
-              ['Zimbabwe','b', 'https://www.ketaaketi.de/'],
-              ['Ecuador', 'c', 'https://www.ketaaketi.de/']
+              ['Nepal','x', 'https://www.ketaaketi.de/nepal'],
+              ['Germany', 'y', 'https://www.ketaaketi.de/laender'],
+              ['Sierra Leone','z', 'https://www.ketaaketi.de/sierra-leone'],
+              ['Burundi','a', 'https://www.ketaaketi.de/burundi'],
+              ['Zimbabwe','b', 'https://www.ketaaketi.de/simbabwe'],
+              ['Ecuador', 'c', 'https://www.ketaaketi.de/ecuador'],
+              ['Madagascar', 'd', 'https://www.ketaaketi.de/laender']
           ]);
           
           var view = new google.visualization.DataView(data);
@@ -69,8 +70,27 @@
     </script>
   </head>
   <body>
-    <div class="dmRespRow" id="1470986505" style="width: 90vw; height: 90vh; top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 5px solid rgb(9, 55, 112);">
+    <div class="dmRespRow" id="1470986505" style="top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 2px solid rgb(9, 55, 112);">
     </div>
+    <style>
+      .dmRespRow {
+        position: relative;
+        width: 50vw;
+        height: auto;
+        z-index: 99;
+        align-content: center;
+      }
+      @media ( max-width: 1280px ) {
+        .dmRespRow {
+          width: 70vw;
+        }
+      }
+      @media ( max-width: 720px ) {
+        .dmRespRow {
+          width: 90vw;
+        }
+      }
+     </style>
     <div>
       <button id="zoomOut" style="z-index: 3;">-</button>
       <button id="zoomIn" style="z-index: 3;">+</button>
