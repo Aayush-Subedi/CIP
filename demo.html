@@ -16,7 +16,7 @@
       function drawStuff() {
           var data = google.visualization.arrayToDataTable([
               ['Country', 'NGO', 'Domain'],
-              ['Nepal','x', 'https://www.ketaaketi.de/nepal'],
+              ['Nepal','x,y,z', 'https://www.ketaaketi.de/nepal'],
               ['Germany', 'y', 'https://www.ketaaketi.de/laender'],
               ['Sierra Leone','z', 'https://www.ketaaketi.de/sierra-leone'],
               ['Burundi','a', 'https://www.ketaaketi.de/burundi'],
@@ -29,9 +29,9 @@
           view.setColumns([0, {
               type: 'number',
               calc: function(data, row) {
-                  var sourceValue = data.getValue(row, 1);
+                  var sourceValue = data.getValue(row, 1).split(",");
                   return {
-                      f: 'Active NGO: ' + sourceValue
+                      f: 'Active NGOs: ' + sourceValue[0]
                   };
               }
           }]);
