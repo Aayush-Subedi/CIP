@@ -1,5 +1,11 @@
 <html>
   <head>
+    <style>
+      path {
+      stroke-width:1; /* control the countries borders width */
+      stroke:#ffffff !important;
+      }
+    </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.load('visualization', '1.1', {
@@ -10,21 +16,22 @@
       function drawStuff() {
           var data = google.visualization.arrayToDataTable([
               ['Country', 'NGO', 'Domain'],
-              ['Nepal','x', 'https://www.ketaaketi.de/'],
-              ['Germany', 'y', 'https://www.ketaaketi.de/'],
-              ['Sierra Leone','z', 'https://www.ketaaketi.de/'],
-              ['Burundi','a', 'https://www.ketaaketi.de/'],
-              ['Zimbabwe','b', 'https://www.ketaaketi.de/'],
-              ['Ecuador', 'c', 'https://www.ketaaketi.de/']
+              ['Nepal','x,y,z', 'https://www.ketaaketi.de/nepal'],
+              ['Germany', 'y', 'https://www.ketaaketi.de/laender'],
+              ['Sierra Leone','z', 'https://www.ketaaketi.de/sierra-leone'],
+              ['Burundi','a', 'https://www.ketaaketi.de/burundi'],
+              ['Zimbabwe','b', 'https://www.ketaaketi.de/simbabwe'],
+              ['Ecuador', 'c', 'https://www.ketaaketi.de/ecuador'],
+              ['Madagascar', 'd', 'https://www.ketaaketi.de/laender']
           ]);
           
           var view = new google.visualization.DataView(data);
           view.setColumns([0, {
               type: 'number',
               calc: function(data, row) {
-                  var sourceValue = data.getValue(row, 1);
+                  var sourceValue = data.getValue(row, 1).split(",");
                   return {
-                      f: 'Active NGO: ' + sourceValue
+                      f: 'Active NGOs: ' + sourceValue[0]
                   };
               }
           }]);
@@ -52,8 +59,47 @@
 
       };
     </script>
+    <script>
+      var zoom = 1;
+      var zoomStep = 0.2;
+  
+      document.getElementById("zoomIn").addEventListener("click", function() {
+        zoom += zoomStep;
+        document.getElementById("1470986505").style.transform = "scale(" + zoom + ")";
+      });
+      document.getElementById("zoomOut").addEventListener("click", function() {
+        if (zoom > zoomStep) {
+          zoom -= zoomStep;
+          document.getElementById("1470986505").style.transform = "scale(" + zoom + ")";
+        }
+      });
+    </script>
   </head>
   <body>
-    <div class="dmRespRow" id="1470986505" style="width: 90vw; height: 90vh; top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 5px solid rgb(9, 55, 112);"></div>
+    <div class="dmRespRow" id="1470986505" style="top: 0; bottom: 0; left: 0; right: 0; margin: auto; border: 2px solid rgb(9, 55, 112);">
+    </div>
+    <style>
+      .dmRespRow {
+        position: relative;
+        width: 50vw;
+        height: auto;
+        z-index: 99;
+        align-content: center;
+      }
+      @media ( max-width: 1280px ) {
+        .dmRespRow {
+          width: 70vw;
+        }
+      }
+      @media ( max-width: 720px ) {
+        .dmRespRow {
+          width: 90vw;
+        }
+      }
+     </style>
+    <div>
+      <button id="zoomOut" style="z-index: 3;">-</button>
+      <button id="zoomIn" style="z-index: 3;">+</button>
+    </div>
   </body>
 </html>
